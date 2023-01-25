@@ -150,6 +150,12 @@ class Piece(object):
 
 def create_grid(locked_positions={}):
     grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if (j, i) in locked_positions:
+                c = locked_positions[(j, i)]
+                grid[i][j] = c
+    return grid
 
 
 def convert_shape_format(shape):
@@ -165,15 +171,28 @@ def check_lost(positions):
 
 
 def get_shape():
-    pass
+    random.choice(shapes)
 
 
 def draw_text_middle(text, size, color, surface):
     pass
 
 
-def draw_grid(surface, row, col):
-    pass
+def draw_grid(surface, row, col, grid):
+    surface.fill((0, 0, 0))
+
+    pygame.font.init()
+    font = pygame.font.SysFont("comicsans", 60)
+    lable = font.render("Tetris", 1, (255, 255, 255))
+
+    surface.blit(lable, (top_left_x + play_width / 2 - (lable.get_width() / 2), 30))
+
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(surface, grid[i][j],
+                             (top_left_x + j * block_size, top_left_y + i * block_size, block_size, block_size), 0)
+
+    pygame.display.update()
 
 
 def clear_rows(grid, locked):
