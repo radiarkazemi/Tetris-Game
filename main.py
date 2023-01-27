@@ -215,7 +215,23 @@ def draw_grid(surface, grid):
 
 
 def clear_rows(grid, locked):
-    pass
+    inc = 0
+    for i in range(len(grid) - 1, -1, -1):
+        row = grid[i]
+        if (0, 0, 0) not in row:
+            inc += 1
+            ind = i
+            for j in range(len(row)):
+                try:
+                    del locked[(j, i)]
+                except:
+                    continue
+    if inc > 0:
+        for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
+            x, y = key
+            if y < ind:
+                new_key = (x, y + inc)
+                locked[new_key] = locked.pop(key)
 
 
 def draw_next_shape(shape, surface):
@@ -223,7 +239,7 @@ def draw_next_shape(shape, surface):
     label = font.render("Next Shape", 1, (255, 255, 255))
 
     sx = top_left_x + play_width + 35
-    sy = top_left_y + play_height / 2 -100
+    sy = top_left_y + play_height / 2 - 100
 
     format = shape.shape[shape.rotation % len(shape.shape)]
     for i, line in enumerate(format):
@@ -266,10 +282,12 @@ def main(win):
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
+    level_time = 0
 
     while run:
         grid = create_grid(locked_position)
         fall_time += clock.get_rawtime()
+        level_time += clock.get_rawtime()
         clock.tick()
 
         if fall_time / 1000 > fall_speed:
@@ -314,6 +332,7 @@ def main(win):
             current_piece = next_piece
             next_piece = get_shape()
             change_piece = False
+            clear_rows(grid, locked_position)
 
         draw_window(win, grid)
         draw_next_shape(next_piece, win)
