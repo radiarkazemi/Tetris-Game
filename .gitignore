@@ -1,3 +1,6 @@
 .idea/
 venv/
 %/
+player_info.db
+players.db
+test.py

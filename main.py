@@ -57,7 +57,6 @@ Z = [['.....',
       '..0..',
       '.....']]
 
-
 I = [['..0..',
       '..0..',
       '..0..',
@@ -98,24 +97,24 @@ J = [['.....',
 
 L = [['.....',
       '...0.',
-      '.000.',
+      '0000.',
       '.....',
       '.....'],
      ['.....',
       '..0..',
       '..0..',
-      '..00.',
-      '.....'],
+      '..0..',
+      '..00.'],
      ['.....',
       '.....',
-      '.000.',
+      '.0000',
       '.0...',
       '.....'],
      ['.....',
       '.00..',
       '..0..',
       '..0..',
-      '.....']]
+      '..0..']]
 
 T = [['.....',
       '..0..',
@@ -162,6 +161,13 @@ def create_grid(locked_positions={}):
                 c = locked_positions[(j, i)]
                 grid[i][j] = c
     return grid
+
+
+def music_theme():
+    pygame.mixer.init()
+    pygame.mixer.music.load("source/Original Tetris theme (Tetris Soundtrack).mp3")
+    pygame.mixer.music.set_volume(0.5)  # 0.0 to 1.0
+    pygame.mixer.music.play(-1)  # -1 to play the music in a loop
 
 
 def convert_shape_format(shape):
@@ -375,6 +381,7 @@ def main_menu(win):
     while run:
         win.fill((0, 0, 0))
         draw_text_middle("Press Any Key to Play", 60, (255, 255, 255), win)
+        music_theme()
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
