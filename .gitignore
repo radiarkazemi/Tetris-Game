@@ -1,6 +1,7 @@
 .idea/
 venv/
 %/
+__pycache__/
 player_info.db
 players.db
 test.py
