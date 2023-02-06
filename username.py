@@ -16,6 +16,7 @@ def show_name():
 root = tk.Tk()
 root.geometry("400x200")
 root.config(bg="#1C1C1C")
+root.title("Player Name")
 
 label = tk.Label(root, text="Enter Your Name", font=("TkDefaultFont", 16), bg="#1C1C1C", fg="#FFFFFF")
 label.pack(pady=20)
