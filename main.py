@@ -1,5 +1,7 @@
 import pygame
 import random
+import username
+import database
 
 # creating the data structure for pieces
 # setting up global vars
@@ -9,6 +11,9 @@ import random
 # - draw_window
 # - rotating shape in main
 # - setting up the main
+
+name = username.username
+# print(name)
 
 """
 10 x 20 square grid
@@ -251,6 +256,18 @@ def clear_rows(grid, locked):
     return inc
 
 
+def show_scores(surface):
+    scores = database.get_scores()
+    font = pygame.font.SysFont("comicsans", 30)
+    y_offset = 50
+    rate = 1
+    for player, score in scores.items():
+        score_text = font.render(f"{rate}. {player}: {score}", 1, (255, 255, 255))
+        surface.blit(score_text, (10, y_offset))
+        y_offset += font.get_height()
+        rate += 1
+
+
 def draw_next_shape(shape, surface):
     font = pygame.font.SysFont("comicsans", 30)
     label = font.render("Next Shape", 1, (255, 255, 255))
@@ -367,6 +384,7 @@ def main(win):
 
         draw_window(win, grid, score)
         draw_next_shape(next_piece, win)
+        show_scores(win)
         pygame.display.update()
 
         if check_lost(locked_position):
@@ -374,10 +392,12 @@ def main(win):
             pygame.display.update()
             pygame.time.delay(1500)
             run = False
+            database.check_name(name, score)
 
 
 def main_menu(win):
     run = True
+
     while run:
         win.fill((0, 0, 0))
         draw_text_middle("Press Any Key to Play", 60, (255, 255, 255), win)
